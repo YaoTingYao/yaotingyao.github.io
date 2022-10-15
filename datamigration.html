@@ -1,297 +1,131 @@
 <!DOCTYPE HTML>
-<!--
-	Editorial by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html>
 	<head>
 		<title>FEMA Emergency Management Data Migration In PostgreSQL</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/main0.css" />
 	</head>
 	<body class="is-preload">
+		<div id="body-container">
 
 		<!-- Wrapper -->
-			<div id="wrapper">
+			<!-- <div id="wrapper"> -->
 
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-
-							<!-- Header -->
-								<header id="header">
-									<a href="index.html" class="logo"><strong>GIS</strong> PORTFOLIO</a>
-									<ul class="icons">
-										<li><a href="https://www.linkedin.com/in/lenayao/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
-										<li><a href="https://github.com/YaoTingYao?tab=repositories" class="icon brands fa-github"><span class="label">Github</span></a></li>
-									</ul>
-								</header>
-
 							<!-- Content -->
 								<section>
-									<header class=>
-										<h1 style="font-weight: 400; width: 1000px;" align="center">FEMA Emergency Management Data Migration In PostgreSQL</h1>
-									</header>
-									<p style="width: 1000px;" align="center">Yao-Ting Yao <br> Team member: Jessie Xu <br>Spatial Database Project </p>
-									<span class="image main"><img src="images/Flood.jpg" alt="" /></span>
-									<p style="width: 1000px;" align="center"><small> Photo by <a href="https://www.ready.gov/floods" target="_blank">FEMA Ready</a></small></figcaption></p>
+									<header>
+										<a href="index.html" class="button">Back</a>
+                    <!-- <INPUT TYPE="button" VALUE="Back" onClick="index.html"> -->
 
-									<p>This project proposes to mine a series of Emergency Management and Disaster Datasets provided by the Federal Emergency Management Agency (FEMA). FEMA provides multiple datasets to help reveal the natural hazards, risks, and related emergency response programs throughout the state. The purpose of this project is to create a FEMA Emergency Management dataset containing the information of The National Risk Index (NRI), Community Emergency Response Team (CERT), and Emergency Management Performance Grants (EMPG) datasets to explore if the Emergency Response Team and funding are well allocated against high-risk hazards at the state level. </p>
+										</br>
+										</br>
+										<h1 style="color: black font-weight: 400; " align="left">FEMA Emergency Management Data Migration In PostgreSQL</h1>
+									</header>
+									<p style= "font-size: 0.8em; text-align:left;">Yao-Ting Yao <br> Team member: Jessie Xu <br>Spatial Database Project </p>
+
+									<p>Are you curious about how many emergency response team and federal grant your hometown have for different disasters? Earthquake, flood, hurricane coastal storm, tornado, tsunami, volcanic eruption, and winter storms are 7 frequent disasters occur in USA. This project provides important information needed by federal, state emergency responders and publics to evaluate resource and federal grant allocation of emergency response.</p>
+
 
 									<hr class="major" />
-
-									<h2>Create FEMA Emergency Management dataset schema in pgAdmin</h2>
-									<p>We create FEMA Emergency Management dataset schema containing the information of the National Risk Index (NRI), Community Emergency Response Team (CERT), and Emergency Management Performance Grants (EMPG) datasets. We modify the content, punctuation, and format from the raw datasets to accommodate the migration. Create schemas, tables, relations, and other components that are required for the construction of a relational database in PostgreSQL. Add a state abbreviation column for the EMPG table for the following connections.</p>
+									<h2 style="color:#e48bae;">Create FEMA Emergency Management dataset schema in pgAdmin</h2>
+									<p>We created FEMA Emergency Management dataset schema containing the information of the National Risk Index (NRI), Community Emergency Response Team (CERT), and Emergency Management Performance Grants (EMPG) datasets. For mining processes, we chose the state level as our geographic unit. We mined the content, punctuation, and format from the raw datasets to accommodate the migration. Create schemas, tables, relations, and other components that are required for the construction of a relational database in PostgreSQL. Add a state abbreviation column for the EMPG table for join connections.</p>
 									<head>
-    <title>Slideshow Images</title>
-    <style>
-      .slider {
-        width: 500px;
-        height: 400px;
-        background-color: yellow;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 0px;
-        text-align: center;
-        overflow: hidden;
-      }
-      .image-container {
-        width: 1500px;
-        background-color: pink;
-        height: 400px;
-        clear: both;
-        position: relative;
-        -webkit-transition: left 2s;
-        -moz-transition: left 2s;
-        -o-transition: left 2s;
-        transition: left 2s;
-      }
-      .slide {
-        float: left;
-        margin: 0px;
-        padding: 0px;
-        position: relative;
-      }
-      #slide-1:target ~ .image-container {
-        left: 0px;
-      }
-      #slide-2:target ~ .image-container {
-        left: -500px;
-      }
-      #slide-3:target ~ .image-container {
-        left: -1000px;
-      }
-      .buttons {
-        position: relative;
-        top: -20px;
-      }
-      .buttons a {
-        display: inline-block;
-        height: 15px;
-        width: 15px;
-        border-radius: 50px;
-        background-color: lightcoral;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="slider">
-      <span id="slide-1"></span>
-      <span id="slide-2"></span>
-		<span id="slide-3"></span>
-      <div class="image-container">
-        <img src="images/DB1.jpg" class="slide" width="500" height="400" />
-        <img src="images/DB3.jpg" class="slide" width="500" height="400" />
-		  <img src="images/DB5.jpg" class="slide" width="500" height="400" />
-      </div>
-      <div class="buttons">
-        <a href="#slide-1"></a>
-        <a href="#slide-2"></a>
-		  <a href="#slide-3"></a>
-      </div>
-    </div>
-  </body>
-</html>
-
+									    <title>Slideshow Images</title>
+									    <style>
+									      .slider {
+									        width: 500px;
+									        height: 400px;
+									        background-color: yellow;
+									        margin-left: auto;
+									        margin-right: auto;
+									        margin-top: 0px;
+									        text-align: center;
+									        overflow: hidden;
+									      }
+									      .image-container {
+									        width: 1500px;
+									        background-color: pink;
+									        height: 400px;
+									        clear: both;
+									        position: relative;
+									        -webkit-transition: left 2s;
+									        -moz-transition: left 2s;
+									        -o-transition: left 2s;
+									        transition: left 2s;
+									      }
+									      .slide {
+									        float: left;
+									        margin: 0px;
+									        padding: 0px;
+									        position: relative;
+									      }
+									      #slide-1:target ~ .image-container {
+									        left: 0px;
+									      }
+									      #slide-2:target ~ .image-container {
+									        left: -500px;
+									      }
+									      #slide-3:target ~ .image-container {
+									        left: -1000px;
+									      }
+									      .buttons {
+									        position: relative;
+									        top: -20px;
+									      }
+									      .buttons a {
+									        display: inline-block;
+									        height: 15px;
+									        width: 15px;
+									        border-radius: 50px;
+									        background-color: lightcoral;
+									      }
+									    </style>
+									  </head>
+									  <body>
+									    <div class="slider">
+									      <span id="slide-1"></span>
+									      <span id="slide-2"></span>
+											<span id="slide-3"></span>
+									      <div class="image-container">
+									        <img src="images/DB1.jpg" class="slide" width="500" height="400" />
+									        <img src="images/DB3.jpg" class="slide" width="500" height="400" />
+											  <img src="images/DB5.jpg" class="slide" width="500" height="400" />
+									      </div>
+									      <div class="buttons">
+									        <a href="#slide-1"></a>
+									        <a href="#slide-2"></a>
+											  <a href="#slide-3"></a>
+									      </div>
+									    </div>
+									  </body>
 
 									<hr class="major" />
 
-									<h2>Data Analysis and Visualization</h2>
-									<p> We choose the state level as a geographic unit to visualize three datasets in our result. We choose 7 frequent disasters: earthquake, flood, hurricane coastal storm, tornado, tsunami, volcanic eruption, and winter storms. Create two new tables that contain the information we need. Join new CERT, EMPG, and NRI tables by the state abbreviation column. Use the total expected annual loss and expected annual loss of each hazard as the disaster risks, and visualize the distribution and relationships between risks and CERT numbers/ state funding. Join layers of the U.S. states to create maps.</p>
-
-                                    <html>
-  <head>
-    <title>Slideshow Images</title>
-    <style>
-      .slider {
-        width: 500px;
-        height: 400px;
-        background-color: yellow;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 0px;
-        text-align: center;
-        overflow: hidden;
-      }
-      .image-container {
-        width: 1500px;
-        background-color: pink;
-        height: 300px;
-        clear: both;
-        position: relative;
-        -webkit-transition: left 2s;
-        -moz-transition: left 2s;
-        -o-transition: left 2s;
-        transition: left 2s;
-      }
-      .slide {
-        float: left;
-        margin: 0px;
-        padding: 0px;
-        position: relative;
-      }
-      #slide-4:target ~ .image-container {
-        left: 0px;
-      }
-      #slide-5:target ~ .image-container {
-        left: -500px;
-      }
-      #slide-3:target ~ .image-container {
-        left: -1000px;
-      }
-      .buttons {
-        position: relative;
-        top: -20px;
-      }
-      .buttons a {
-        display: inline-block;
-        height: 15px;
-        width: 15px;
-        border-radius: 50px;
-        background-color: lightcoral;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="slider">
-      <span id="slide-4"></span>
-      <span id="slide-5"></span>
-      <div class="image-container">
-        <img src="images/db2.png" class="slide" width="500" height="400" />
-        <img src="images/db1.png" class="slide" width="500" height="400" />
-      </div>
-      <div class="buttons">
-        <a href="#slide-4"></a>
-        <a href="#slide-5"></a>
-      </div>
-    </div>
-  </body>
-</html>
-									<p></p>
-									<p>The application of FEMA data presents great potential for discovering emergency preparedness and response across the country. We explored the connections between various types of hazards that occurred frequently in the community and the countermeasures. Our results examined the response ability at the state level against different high risk hazards. In some states, the positive distribution pattern meets what we suspected previously.</p>
-									<p>We created a bivariate map to visualize the relationship between national risk indices and the Emergency funding. Texas, New Jersey, Tennessee, Iowa, Kansas, and Alabama are present in brown colors, which means that these states have both high hazards risks and state emergency funding. Areas colored by khaki indicate higher funding and lower expected annual loss scores, like Maine, Massachusetts, Connecticut, and Delaware. While the purple areas have higher annual loss scores but much lower state funding, like Washington, Oklahoma, Louisiana, Missouri, Illinois, Mississippi, and Georgia.</p>
-                                    <p>We also created a bivariate map to visualize the number of CERT programs responding to each disaster and the corresponding level of national risks (expected annual loss score) in each state. Observing the distribution of the level of risks, we found these two variables did not show a positive correlation for some disasters. For example, a negative correlation could be seen for the volcanic eruption response. See the purple areas from the top right map, there are only 4 volcanic eruption emergency response teams that are located in 4 different states. However, a higher risk is shown in many other states that have no response team. </p>
+									<h2 style="color:#e48bae;">Data Visualization- Bivariate Maps</h2>
+									<p>We visualize the distribution and relationships between risks and CERT numbers/ state funding with two bivariate maps. The application of FEMA data presents great potential for discovering emergency preparedness and response across the country.</p>
+                  <span class="image main"><img src="images/db2.png" alt="" /></span>
+									<p>This map shows relationship between national risk indices and the Emergency funding. Texas, New Jersey, Tennessee, Iowa, Kansas, and Alabama are present in brown colors, which means that these states have both high hazards risks and state emergency funding. Areas colored by khaki indicate higher funding and lower expected annual loss scores, like Maine, Massachusetts, Connecticut, and Delaware. While the purple areas have higher annual loss scores but much lower state funding, like Washington, Oklahoma, Louisiana, Missouri, Illinois, Mississippi, and Georgia.</p>
+                  <span class="image main"><img src="images/db1.png" alt="" /></span>
+                  <p>We also created a bivariate map to visualize the number of CERT programs responding to each disaster and the corresponding level of national risks (expected annual loss score) in each state. Observing the distribution of the level of risks, we found these two variables did not show a positive correlation for some disasters. For example, a negative correlation could be seen for the volcanic eruption response. See the purple areas from the top right map, there are only 4 volcanic eruption emergency response teams that are located in 4 different states. However, a higher risk is shown in many other states that have no response team. </p>
 
 								</section>
-
-						</div>
-					</div>
-
-				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-
-							<!-- Search -->
-								<section id="search" class="alt">
-									<form method="post" action="#">
-										<input type="text" name="query" id="query" placeholder="Search" />
-									</form>
-								</section>
-
-							<!-- Menu -->
-								<nav id="menu">
-									<header class="major">
-										<h2>Menu</h2>
-									</header>
-									<ul>
-										<li><a href="index.html">Homepage</a></li>
-										<li><a href="generic.html">Generic</a></li>
-										<li><a href="elements.html">Elements</a></li>
-										<li>
-											<span class="opener">Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Etiam Dolore</a></li>
-										<li><a href="#">Adipiscing</a></li>
-										<li>
-											<span class="opener">Another Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Maximus Erat</a></li>
-										<li><a href="#">Sapien Mauris</a></li>
-										<li><a href="#">Amet Lacinia</a></li>
-									</ul>
-								</nav>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Ante interdum</h2>
-									</header>
-									<div class="mini-posts">
-										<article>
-											<a href="#" class="image"><img src="images/pic07.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic08.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic09.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
+								<!-- Footer -->
+									<div id="footer">
+										<script>
+									var today = new Date();
+									var year = today.getFullYear();
+									document.writeln("Copyright &copy; " + year+" - Yao-Ting Yao");
+										 </script>
 									</div>
-									<ul class="actions">
-										<li><a href="#" class="button">More</a></li>
-									</ul>
-								</section>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Get in touch</h2>
-									</header>
-									<p>Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin sed aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-									<ul class="contact">
-										<li class="icon solid fa-envelope"><a href="#">information@untitled.tld</a></li>
-										<li class="icon solid fa-phone">(000) 000-0000</li>
-										<li class="icon solid fa-home">1234 Somewhere Road #8254<br />
-										Nashville, TN 00000-0000</li>
-									</ul>
-								</section>
-
-							<!-- Footer -->
-								<footer id="footer">
-									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-								</footer>
-
 						</div>
 					</div>
+      </div>
 
-			</div>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
