@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Deep Learning</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main0.css" />
+	</head>
+	<body class="is-preload">
+		<div id="body-container">
+
+		<!-- Wrapper -->
+			<!-- <div id="wrapper"> -->
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<!-- Content -->
+								<section>
+									<header>
+										<a href="index.html" class="button">Back</a>
+
+										</br>
+										</br>
+										<h1 style="color: black font-weight: 400; " align="left">Cropland Maps on Plane-Scope Imagery Using DenseNet and U-Net at National Scales in Zambia</h1>
+									</header>
+									<p style= "font-size: 0.8em; text-align:left;">Yao-Ting Yao<br>Advisor: Lyndon Estes, Sitian Xiong<br>Master Thesis</p>
+
+									<p>Cropland Mapping is a crucial foundation for evaluating food security and land use dynamics. However, in Africa, the only source of cropland data are remotely sensed land cover maps because agriculture changes rapidly and lack of census cropland data.</p>
+									<p>This paper proposes to use U-Net sematic segmentation method to create Cropland Mapping in Republic of Zambia at national scales using high spatial-resolution Planet-Scope satellite imagery (2.77m) from June 2021 to March 2022.</p>
+
+
+									<hr class="major" />
+									<h2 style="color:#e48bae;">Create Google Earth Engine(GEE) base labeling platform and workflow protocol</h2>
+									<p>We created 200 by 200 grids covering Zambia, created catalog and used R script randomly seeded 600 labels. Base on growth-season imagery, off-season imagery and NDVI imagery, we digitized fields as labels. Used GEE API to create automation tools, include createing 3 classes raster label images(field, non-field and field boundry), imagery downloader and imagery sampler.</p>
+									<span class="image main"><img src="images/gee.png" alt="" /></span>
+
+
+									<hr class="major" />
+
+									<h2 style="color:#e48bae;">Model Training, Validation and Pridiction</h2>
+									<p>600 labels created from Zambia and 4977 created from other Africa contry split 80% for Training and 20% for Validation.</p>
+									<div id="banner">
+									    <div class="inline-block">
+									        <img src ="images/field1.png" width="200" height="200">
+									    </div>
+
+									    <div class="inline-block">
+									        <img src ="images/field2.png" width="200" height="200">
+									    </div>
+
+									    <div class="inline-block">
+									        <img src ="images/field3.png" width="200" height="200">
+									    </div>
+									</div>
+									<p>     U-Net is one of the cutting-edge architectures of CNN for image segmentation. U-Net has U-shape construction path (encoder) and an expansion path (decoder) structure, in which the spatial scale is subsequently reduced after consecutive pooling operations and increased in a contracting path. This research use Pytorch and scikit-learn library to train model and predict results. Choosed 100 epoch and 16 for batch size.</p>
+									<span class="image main"><img src="images/unet.png" alt="" /></span>
+                  <span class="image main"><img src="images/model.png" alt="" /></span>
+                  <p> </p>
+
+								</section>
+								<!-- Footer -->
+									<div id="footer">
+										<script>
+									var today = new Date();
+									var year = today.getFullYear();
+									document.writeln("Copyright &copy; " + year+" - Yao-Ting Yao");
+										 </script>
+									</div>
+						</div>
+					</div>
+      </div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

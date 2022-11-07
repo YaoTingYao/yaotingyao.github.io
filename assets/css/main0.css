@@ -29,6 +29,10 @@ body {
 ol, ul {
   list-style: none; }
 
+.inline-block {
+     display: inline-block;
+  }
+
 blockquote, q {
   quotes: none; }
   blockquote:before, blockquote:after, q:before, q:after {
@@ -2119,7 +2123,7 @@ button,
 
 /* Banner */
 #banner {
-  padding: 6em 0 4em 0 ;
+  padding: 2em 0 2em 0 ;
   display: -moz-flex;
   display: -webkit-flex;
   display: -ms-flex;
