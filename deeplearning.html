@@ -23,24 +23,36 @@
 
 										</br>
 										</br>
-										<h1 style="color: black font-weight: 400; " align="left">Cropland Maps on Plane-Scope Imagery Using DenseNet and U-Net at National Scales in Zambia</h1>
+										<h1 style="color: black font-weight: 400; " align="left">Cropland Maps on Planet-Scope Imagery Using U-Net at National Scales in Zambia</h1>
 									</header>
 									<p style= "font-size: 0.8em; text-align:left;">Yao-Ting Yao<br>Advisor: Lyndon Estes, Sitian Xiong<br>Master Thesis</p>
 
-									<p>Cropland Mapping is a crucial foundation for evaluating food security and land use dynamics. However, in Africa, the only source of cropland data are remotely sensed land cover maps because agriculture changes rapidly and lack of census cropland data.</p>
-									<p>This paper proposes to use U-Net sematic segmentation method to create Cropland Mapping in Republic of Zambia at national scales using high spatial-resolution Planet-Scope satellite imagery (2.77m) from June 2021 to March 2022.</p>
+									<p>Cropland mapping is a crucial tool for evaluating food security. Crop fields in sub-Saharan
+African countries expect to expand by more than three times in the next decade to satisfy food
+demand. Developing accurate, large-area cropland maps of Africa’s smallholder agricultural
+systems is critical.</p>
+									<p>To address this need, we use U-Net, a convolutional neural network, to map
+cropland for the year 2022 in the Republic of Zambia, a country undergoing rapid agricultural
+growth.</p>
 
 
 									<hr class="major" />
-									<h2 style="color:#e48bae;">Create Google Earth Engine(GEE) base labeling platform and workflow protocol</h2>
-									<p>We created 200 by 200 grids covering Zambia, created catalog and used R script randomly seeded 600 labels. Base on growth-season imagery, off-season imagery and NDVI imagery, we digitized fields as labels. Used GEE API to create automation tools, include createing 3 classes raster label images(field, non-field and field boundry), imagery downloader and imagery sampler.</p>
+									<h2 style="color:#e48bae;">Created a labeling platform and workflow protocol on Google Earth Engine (GEE)</h2>
+									<p>We created 200 by 200 grids covering Zambia, created catalog and wrote R script randomly seeded 600 labels. We provided high spatial-resolution Planet-Scope satellite imagery grids (2.77m) of the growing and off season as well as NDVI imagery to create labels for training and evaluating the model, collecting a total of 5,977, 600 over Zambia and the remainder from the three other Africa countries (Kenya, Tanzania, Ghana, Republic of Congo).</p>
 									<span class="image main"><img src="images/gee.png" alt="" /></span>
+                  <p>Used GEE API to create automation tools, including rasterize labels into 3 classes(field, non-field and field boundary), imagery downloader and imagery resampler.</p>
+									<span class="image main"><img src="images/gee_api.png" alt="" /></span>
 
 
 									<hr class="major" />
 
 									<h2 style="color:#e48bae;">Model Training, Validation and Pridiction</h2>
-									<p>600 labels created from Zambia and 4977 created from other Africa contry split 80% for Training and 20% for Validation.</p>
+									<p>We trained the model to
+recognize three classes (field, non-field, and field boundary) for 200 epochs, using 80% of the
+collected labels for training and 20% for validation, resulting in an F1 score of 0.66 for the field
+interior class. We then fine-tuned the model on the labels for Zambia (F1 = 0.69), and the
+mapped the predictions for the field interior class for the entire country and passed these
+through a final segmentation step to convert the binary predictions into individual fields.</p>
 									<div id="banner">
 									    <div class="inline-block">
 									        <img src ="images/field1.png" width="200" height="200">
@@ -54,10 +66,19 @@
 									        <img src ="images/field3.png" width="200" height="200">
 									    </div>
 									</div>
-									<p>     U-Net is one of the cutting-edge architectures of CNN for image segmentation. U-Net has U-shape construction path (encoder) and an expansion path (decoder) structure, in which the spatial scale is subsequently reduced after consecutive pooling operations and increased in a contracting path. This research use Pytorch and scikit-learn library to train model and predict results. Choosed 100 epoch and 16 for batch size.</p>
+									<p>     U-Net is one of the cutting-edge architectures of CNN for image segmentation. U-Net has U-shape construction path (encoder) and an expansion path (decoder) structure, in which the spatial scale is subsequently reduced after consecutive pooling operations and increased in a contracting path. This research use Pytorch and scikit-learn library to train model and predict results. </p>
 									<span class="image main"><img src="images/unet.png" alt="" /></span>
+                  <p>The
+results demonstrate the value of applying neural network-based approaches with new sources
+of high resolution imagery for cropland mapping because of its ability to detect individual fields
+more effectively than approaches previously used to map Zambia (e.g. Random Forests). Future
+opportunities exist to improve the model by collecting labels that better balancing the number
+of labels among different classes, which includes improving the number of non-field labels on
+landscapes that lead to false positives (e.g., wetland areas). In addition to improving the overall
+accuracy, the maps provide additional valuable information on field size, which can be used to
+understand the characteristics of the agricultural system. </p>
                   <span class="image main"><img src="images/model.png" alt="" /></span>
-                  <p> </p>
+
 
 								</section>
 								<!-- Footer -->
