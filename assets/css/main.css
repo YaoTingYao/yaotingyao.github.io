@@ -46,6 +46,11 @@ mark {
   background-color: transparent;
   color: inherit; }
 
+  #footer {
+    color: rgb(204, 156, 172);
+    text-align: center;
+  }
+
 input::-moz-focus-inner {
   border: 0;
   padding: 0; }
