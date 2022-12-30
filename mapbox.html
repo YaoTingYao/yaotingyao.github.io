@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Mapping Ukraine</title>
+    <!--MAPBOX SCRIPTS-->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css"
+      rel="stylesheet" />
+
+    <!-- FONT STYLESHEETS -->
+    <link href='https://fonts.googleapis.com/css?family=Cairo' rel='stylesheet'>
+
+    <!-- c3 for charting, based on d3 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.js"></script>
+
+    <!-- w3.css for popup modal -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Cairo';
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+      }
+      h1 {
+        font-size: 35px;
+        line-height: 30px;
+        font-weight: bold;
+        color: #9ebcda;
+        text-shadow: 1px 1px black;
+      }
+      h2 {
+        font-size: 25px;
+        line-height: 20px;
+        margin-bottom: 10px;
+      }
+      h4 {
+        font-size: 25px;
+        font-weight: bold;
+      }
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    #console {
+      position: absolute;
+      margin: 10px;
+      width: 450px;
+      background-color: rgb(138, 138, 136, .6);
+      padding: 10px 20px;
+    }
+    .button{
+      background-color: #9ebcda;
+      border: none;
+      padding: 3px 15px;
+      text-align: center;
+      display: inline-block;
+      font-size: 20px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .session {
+      margin-bottom: 20px;
+    }
+    .row {
+      height: 12px;
+      width: 100%;
+    }
+    #mouseover-properties{
+      font-size: 25px;
+    }
+    #tweets-legend2{
+      column-count: 3;
+      column-gap:10px;
+    }
+    .legend div span {
+      border-radius: 50%;
+      display: inline-block;
+      height: 15px;
+      margin-right: 5px;
+      width: 15px;
+    }
+    .c3-axis-y text {
+      font-family: 'Cairo';
+      font-size: 15px;
+    }
+    .c3-axis-x text {
+      font-family: 'Cairo';
+      font-size: 15px;
+    }
+    /* Button used to open the contact form - fixed at the bottom of the page */
+    .open-button {
+      background-color: rgb(130, 130, 129, .6);
+      color: white;
+      padding: 16px 20px;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+      position: fixed;
+      bottom: 23px;
+      right: 28px;
+      width: 280px;
+    }
+    /* The popup form - hidden by default */
+    .form-popup {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 15px;
+      z-index: 9;
+    }
+    /* Add styles to the form container */
+    .form-container {
+      width: 430px;
+      padding: 10px;
+      background-color:rgb(99,99,99);
+      border: 2px solid;
+    }
+    /* Set a style for the chart button */
+    .form-container .btn {
+      background-color: #04AA6D;
+      color: white;
+      padding: 16px 20px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom:10px;
+      opacity: 0.8;
+    }
+    /* Add a background color to the close button */
+    .form-container .cancel {
+      background-color: rgb(130, 130, 129);
+      border-radius: 5px;
+    }
+    /* Add some hover effects to buttons */
+    .form-container .btn:hover, .open-button:hover {
+      opacity: 1;
+    }
+    </style>
+  </head>
+
+<body>
+<!--MAP CONTAINER-->
+    <div id='map'></div>
+<!--CONSOLE WITH TIME SLIDER-->
+    <div id="console">
+      <div id="menu">
+        <div class = 'button'>
+          <a href="about.html">About Us</a>
+        </div>
+        <div class = 'button'>
+          <a href="https://github.com/lecarver/mappingukraine.github.io/">GitHub</a>
+        </div>
+        <button onclick="document.getElementById('id01').style.display='block'" class="button">Expore the Map</button>
+          <div id="id01" class="w3-modal">
+            <div class="w3-modal-content w3-animate-zoom">
+              <header class="w3-container w3-teal">
+                <span onclick="document.getElementById('id01').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+                <h2>Mapping Tweets in the Russia-Ukraine War</h2>
+              </header>
+              <div class="w3-container" style="text-align: left;">
+                <p>Social media plays a key role as a communication channel, intelligence source, and propaganda platform during times of conflict. This map will help you to explore if there is a relationship between instances of conflict and when, where, and at what magnitude Twitter posts about the conflict occurring within the conflict zone of Ukraine.</p>
+                <ul>
+                 <li>Click the “Total Tweets by Month” button to explore the chart of total tweets numbers between February and October 2022</li>
+                 <li>Move the time slider to display conflict point and quantile choropleth tweet map changes along different months.</li>
+                 <li>Hover the cursor to explore the number of tweets of the administrative area popup in the console. </li>
+                </ul>
+                <div class="viedo" style="text-align: center;">
+                <video  width="600px" height="400px" controls autoplay loop>
+                  <source src="data/viedo.mp4" type="video/mp4">
+                </video>
+                </div>
+              </div>
+            </div>
+          </div>
+      <h1>Mapping Tweets in the Russia-Ukraine War: February - October 2022</h1><br/>
+<!-- Conflict sliderbar -->
+      <div class="session" id = "sliderbar">
+        <h2>Month: <label id="active-month"></label></h2>
+        <input
+          id="slider"
+          class="row"
+          type="range"
+          min="1"
+          max="10"
+          step="1"
+          value="1"
+        />
+      </div>
+  <!--Show Tweets by Administrative Area on mouse hover-->
+      <div id ='mouseover-properties'>
+        <div><strong>Administrative Area: <span id='admin'></span></strong></div>
+        <div><span id = 'tweets'></span> tweets in <span id='month'></span></div>
+      </div>
+  <!--Legend-->
+      <div id="tweets-legend2" class="legend">
+        <h4>Conflicts</h4>
+        <!-- <div><span style="background-color: rgba(0, 0, 0, 0)"></span></div> -->
+        <div><span style="background-color: #d10000; margin-top: 20px;"></span></div>
+      </div>
+      <div id="tweets-legend2" class="legend">
+        <h4>Tweets</h4>
+        <br>
+        <div><span style="background-color: #9ebcda"></span>25</div>
+        <div><span style="background-color: #bfd3e6"></span>5</div>
+        <div><span style="background-color: #e0ecf4"></span>1</div>
+        <div><span style="background-color: #f7fcfd"></span>0</div>
+        <div><span style="background-color: #8c6bb1"></span>100</div>
+        <div><span style="background-color: #88419d"></span>1000</div>
+        <div><span style="background-color: #6e016b"></span>4000</div>
+      </div>
+    </div>
+    <br>
+    <!--Chart-->
+    <div id = "tweet-chart">
+        <button class="button" onclick="openForm()">Total Tweets by Month</button>
+        <div   class="form-popup" id="myForm">
+          <form action="/action_page.php" class="form-container">
+            <div id = "tweet-chart">
+                <h4> Total Tweets by Month </h4>
+                <div id="chart"></div>
+            </div>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+          </form>
+        </div>
+
+        <script>
+        function openForm() {
+          document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+        }
+        </script>
+    </div>
+  </div>
+
+    <script>
+//SET UP BASEMAP
+    mapboxgl.accessToken = 'pk.eyJ1IjoibGVjYXJ2ZXIiLCJhIjoiY2w0ZTZmZzJ6MDBqNTNmb3g1OHN0cGk0bCJ9.k4INybsqUGMfjtQS6zB3Sg';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/lecarver/cl4h7sr6m000i15o0yn6okawc',
+      center: [28.75, 48.75],
+      zoom: 5.3,
+    });
+
+
+  map.on('load', () => {
+    //LOAD TWEET DATA
+        map.addSource('tweets_1-9ml1aq', {
+          'type': 'vector',
+          'url': 'mapbox://lecarver.2v2s1drf'
+        });
+        map.addLayer({
+          id: 'tweets_1-9ml1aq',
+          type: 'fill',
+          source: 'tweets_1-9ml1aq',
+          'source-layer': 'tweets_1-9ml1aq',
+          'paint': {
+          'fill-color': [
+              'interpolate',
+              ['linear'],
+              ['get', 'TweetCount'],
+              0,
+    					'#f7fcfd',
+    					1,
+    					'#bfd3e6',
+    					5,
+    					'#9ebcda',
+    					25,
+    					'#8c96c6',
+    					100,
+    					'#8c6bb1',
+    					1000,
+    					'#88419d',
+    					4000,
+    					'#6e016b'
+
+            ],
+            'fill-outline-color': '#673621',
+            'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], false],
+              1,
+              0.6
+            ]
+          }
+        });
+
+//LOAD UKRAINE BATTLE LAYERS-- WE LOAD SEVERAL LAYERS WITH DIFFERENT STYLING TO GIVE 'GLOW' EFFECT
+    map.addSource('ukraine_battles-68qptn',{
+      type: 'vector',
+      url: 'mapbox://lecarver.2uyhdnmg'
+      });
+    map.addLayer({
+      id: 'ukraine_battles-68qptn',
+      type: 'circle',
+      source: 'ukraine_battles-68qptn',
+      "source-layer": 'ukraine_battles-68qptn',
+      paint: {
+        'circle-radius':20,
+        'circle-color': '#d10000',
+        'circle-opacity': 0.4,
+        'circle-blur': 3
+      }
+    });
+    map.addLayer({
+      id: 'ukraine_battles-68qptn copy',
+      type: 'circle',
+      source: 'ukraine_battles-68qptn',
+      "source-layer": 'ukraine_battles-68qptn',
+      paint: {
+        'circle-radius': 15,
+        'circle-color': '#fb0e0e',
+        'circle-opacity': 0.4,
+        'circle-blur': 3
+      }
+    });
+    map.addLayer({
+      id: 'ukraine_battles-68qptn copy 1',
+      type: 'circle',
+      source: 'ukraine_battles-68qptn',
+      "source-layer": 'ukraine_battles-68qptn',
+      paint: {
+        'circle-radius': 10,
+        'circle-color': '#fec7c7',
+        'circle-opacity': 0.4,
+        'circle-blur': 3
+      }
+    });
+    const tweetLegend = document.getElementById('tweets-legend');
+
+// FILTERING LAYERS BY TIME
+    filterBy(0);
+    document.getElementById('slider').addEventListener('input', (e) => {
+        var month = parseInt(e.target.value, 10);
+        filterBy(month);
+    });
+    //We set up an array of months, using blanks for 0 and 1 position so that we match month numbers
+    function filterBy(month) {
+      var months = ['','','February','March','April','May','June',
+                'July','August','September','October'];
+      //Set filter to filter month index against MONTH2 column in data (e.g. February is index position 2 in months array and is 2 in MONTH2 column)
+      var filters = ['==', 'MONTH2', month];
+      map.setFilter('ukraine_battles-68qptn', filters);
+      map.setFilter('ukraine_battles-68qptn copy', filters);
+      map.setFilter('ukraine_battles-68qptn copy 1', filters);
+      map.setFilter('tweets_1-9ml1aq', filters);
+
+      //Set the label in the console to the month based on the months array
+      document.getElementById('active-month').textContent = months[month];
+    }
+// INFO BOX FOR FOR ADMIN BOUNDARIES IN CONSOLE
+    //Highlight administrative bouNdary on mouse hover & grab month, region name, and tweet count properties
+    let hoveredStateId = null
+    const adminDisplay = document.getElementById('admin');
+    const tweetDisplay = document.getElementById('tweets');
+    const monthDisplay = document.getElementById('month');
+
+      map.on('mousemove', 'tweets_1-9ml1aq', (e) => {
+        const name = e.features[0].properties.Name;
+        const tweets = e.features[0].properties.TweetCount;
+        const month = e.features[0].properties.Month;
+
+        if (e.features.length > 0) {
+          if (hoveredStateId !== null) {
+            map.setFeatureState(
+              { source: 'tweets_1-9ml1aq',sourceLayer: 'tweets_1-9ml1aq', id: hoveredStateId },
+              { hover: false }
+            );
+          }
+          hoveredStateId = e.features[0].id;
+          map.setFeatureState(
+          { source: 'tweets_1-9ml1aq',sourceLayer: 'tweets_1-9ml1aq', id: hoveredStateId },
+          { hover: true }
+          );
+        }
+        if (e.features.length === 0) return;
+        adminDisplay.textContent = name;
+        tweetDisplay.textContent = tweets;
+        monthDisplay.textContent = month;
+      });
+
+    //Drop highlight when mouse leaves
+      map.on('mouseleave', 'state-fills', () => {
+        if (hoveredStateId !== null) {
+          map.setFeatureState(
+            { source: 'states', id: hoveredStateId },
+            { hover: false }
+          );
+        }
+        hoveredStateId = null;
+      });
+// CREATE CHART OF TOTAL TWEET BY MONTH
+var chart = c3.generate({
+    data: {
+        columns: [
+            ['TweetCount', 6419, 15512, 8329, 5380, 4598, 5878, 5792, 3551, 4312]
+        ],
+        type: 'line',
+        colors: {TweetCount: '#aec7e8'},
+        color: function (color, d) {
+            return d.id && d.id === 'data1' ? d3.rgb(color).darker(d.value / 120) : color;
+        }
+    },
+    axis: {
+      x: {
+        type: 'category',
+        categories: ['Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.']
+      }
+    },
+    bar: {width: {ratio: 0.5}},
+    legend: {show: false}
+  });
+});
+    </script>
+  </body>
+</html>
