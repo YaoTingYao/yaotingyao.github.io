@@ -27,16 +27,15 @@
 										</header>
 										<p style= "font-size: 0.8em; text-align:left;">Internship</p>
 
-										<p>Working as GIS developer in Clark Lab, the project is collaborate with TerraCarbon LLC.</p>
-
+										<p>Working as a GIS developer in Clark Lab, the project is based on a series of case studies that were conducted by the Clark Labs/TerraCarbon team in locations with evident frontier deforestation or mosaic deforestation.</p>
+                    <p>The Risk Mapping tool uses the distance of Forest Cover Benchmark Maps (FCBM) as input imagery. This article chooses Acre, Brazil with 30 m spatial resolution FCBM imagery during 2014-2020 as an example.</p>
  <hr class="major" />
- <h2 style="color:#e48bae;">Deforestation</h2>
- <p>The landcover maps are based on Landsat imagery upsampled to 15 m through pan merge. Classifications created by using machine learning algorithms with supervised
-classifications. Pond aquaculture and water classes are used Multi-Layer Perceptron (MLP) neural network; mangrove and wetland classes are used Mahalanobis Typicality algorithm.</p>
+ <h2 style="color:#e48bae;">STEP 1: Convert imagery to GDAL dataset</h2>
+ <p>Use os.chdir to set up the current working directory. I created a function called raster2array, importing raster imagery to the GDAL dataset and then converting it to Numpy array. </p>
 
-              <span class="image main"><img src="images/mlp.png" alt="" /></span>
+              <span class="image main"><img src="images/raster2array.png" alt="" /></span>
 
-<div id="banner">
+<!-- <div id="banner">
 		<div class="inline-block">
 				<img src ="images/mlp1.png" width="300" height="300">
 		</div>
@@ -46,16 +45,27 @@ classifications. Pond aquaculture and water classes are used Multi-Layer Percept
 		</div>
 
 
-		</div>
+		</div> -->
 
 							<!-- Content
 									<!- <span class="image main"><img src="images/pond.webp" alt="" /></span>
                                     <p style="width: 1000px;" align="center"><small> Photo by <a href="https://clarklabs.org/aquaculture/" target="_blank">Clark Lab</a></small></figcaption></p> -->
 																		<hr class="major" />
-																		<h2 style="color:#e48bae;">Inprove automation procedure</h2>
-																		<p> My responsibility is to improve automation procedure, preprocessing 2020 data and running machine learning algorithm to predict
-2022 land cover, by writing SQL and Python scripts. I wrote a Python script to automate deleting all temprary files after mapping process. As a result, people doesn't need to open folder and delete temprary files anymore. </p>
-              <span class="image main"><img src="images/automation.png" alt="" /></span>
+																		<h2 style="color:#e48bae;">STEP 2: Create the Benchmark Risk Model</h2>
+																		<p>For discrete case with ordinal classes, Clark Lab suggested a Geometric Classification has small intervals where the frequency is high progressing smoothly to large intervals where the frequency is lower. First, we need to determine the Negligible Risk Threshold (NRT) Distance. NRT is the distance from forest cumulative frequency of deforestation reaches 99.5%. In Acre, 99.5% of deforestation occurred within a distance of 2460 m.</p>
+																		<p>In Acre, where the resolution of the mapped data is 30m, the lower limit of the highest risk class (LL) = 30 m (the minimum distance possible without being in non-forest) and the upper limit of the lowest risk class (UL) = 2460m (the Negligible Risk Threshold). With the number of classes (n_classes) = 30</p>
+																		<div id="banner">
+																				<div class="inline-block">
+																						<img src ="images/step2_1.png" width="300" height="300">
+																				</div>
+
+																				<div class="inline-block">
+																						<img src ="images/step2_2.png" width="300" height="300">
+																				</div>
+																		</div>
+																		<p>I used Numpy library to reclassify the map.</p>
+
+              <span class="image main"><img src="images/reclass.png" alt="" /></span>
 
 							<!-- Footer -->
 								<div id="footer">
