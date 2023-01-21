@@ -25,13 +25,13 @@
 											</br>
 											<h1 style="color: black font-weight: 400; " align="left">Developing Verra’s Jurisdictional and Nested REDD+ (JNR) Risk Mapping Tool</h1>
 										</header>
-										<p style= "font-size: 0.8em; text-align:left;">Internship</p>
+										<p style= "font-size: 0.8em; text-align:left;">GIS Programmer internship in Clark Lab</p>
 
 										<p>Working as a GIS developer in Clark Lab, the project is based on a series of case studies that were conducted by the Clark Labs/TerraCarbon team in locations with evident frontier deforestation or mosaic deforestation.</p>
-                    <p>The Risk Mapping tool uses the distance of Forest Cover Benchmark Maps (FCBM) as input imagery. This article chooses Acre, Brazil with 30 m spatial resolution FCBM imagery during 2014-2020 as an example.</p>
+                    <p>The Risk Mapping tool uses the distance of Forest Cover Benchmark Maps (FCBM) as input imagery. This tool allows users to analyze different formats of raster imagery (e.g.,GEOTIFF, IDRISI Raster). Users can decide the number of classes and the Negligible Risk Threshold (NRT) Distance based on the distance from forest cumulative frequency of deforestation reaches 99.5%.  </p>
  <hr class="major" />
  <h2 style="color:#e48bae;">STEP 1: Convert imagery to GDAL dataset</h2>
- <p>Use os.chdir to set up the current working directory. I created a function called raster2array, importing raster imagery to the GDAL dataset and then converting it to Numpy array. </p>
+ <p>This article chooses Acre, Brazil with 30 m spatial resolution FCBM imagery during 2014-2020 as an example. Use os.chdir to set up the current working directory. I created a function called raster2array, importing raster imagery to the GDAL dataset and then converting it to Numpy array. </p>
 
               <span class="image main"><img src="images/raster2array.png" alt="" /></span>
 
@@ -60,12 +60,21 @@
 																				</div>
 
 																				<div class="inline-block">
-																						<img src ="images/step2_2.png" width="300" height="300">
+																						<img src ="images/step2_2.png" width="300" height="100">
 																				</div>
 																		</div>
-																		<p>I used Numpy library to reclassify the map.</p>
-
+																		<p>I used the Numpy library to reclassify the map. Firstly, Create 2D array of 30 classes LL and UL. Converting to 2D array would be faster than using for loop list by 30%. Secondly, the deforestation rate is pretty lower when the distance is larger than and equal to NRT. I used “np.ma.masked_where” function to create the mask array and fill the 0 value into it. Thirdly, using “np.where” function to reclass the value.</p>
               <span class="image main"><img src="images/reclass.png" alt="" /></span>
+							<!-- Content-->
+							<hr class="major" />
+							<h2 style="color:#e48bae;">STEP 3: Convert GDAL dataset to imagery </h2>
+							<p>I created a function called array2raster to convert array to raster imagery. Here is a trick to allow the user to input different datatype of raster imagery (e.g.,GEOTIFF, IDRISI Raster), by using GetDriver() instead of calling the driver’s name.</p>
+							<!-- <p></p>
+
+							<p></p> -->
+<span class="image main"><img src="images/array2raster.png" alt="" /></span>
+<span class="image main"><img src="images/riskmap30.png" alt="" /></span>
+
 
 							<!-- Footer -->
 								<div id="footer">
