@@ -36,9 +36,9 @@ growth.</p>
 
 									<hr class="major" />
 									<h2 style="color:#e48bae;">Created a labeling platform and workflow protocol on Google Earth Engine (GEE)</h2>
-									<p>We created 200 by 200 grids covering Zambia, created catalog and wrote R script randomly seeded 600 labels. We provided high spatial-resolution Planet-Scope satellite imagery grids (2.77m) of the growing and off season as well as NDVI imagery to create labels for training and evaluating the model, collecting a total of 5,977, 600 over Zambia and the remainder from the three other Africa countries (Kenya, Tanzania, Ghana, Republic of Congo).</p>
+									<p>A grid of 200 by 200 was generated to cover the entire region of Zambia. A catalog was created, using R script to randomly seed 600 labels in each agriculture zone. High spatial-resolution satellite imagery grids of the growing and off seasons were obtained from Planet-Scope (with a resolution of 2.77m), along with NDVI imagery. These were utilized to create labels for training and evaluating the model, resulting in 921 labels for Zambia and the 5,377 labels from three other African countries (Kenya, Tanzania, Ghana, and the Republic of Congo).</p>
 									<span class="image main"><img src="images/gee.png" alt="" /></span>
-                  <p>I used GEE API to create automation tools, including rasterize labels into 3 classes(field, non-field and field boundary), imagery downloader and imagery resampler.</p>
+                  <p>The Google Earth Engine (GEE) API was utilized to develop a set of automation tools that involved <a href="https://colab.research.google.com/drive/1ZZg_OdoOSVGRepmwEL4Tgs0ixQXpefiv">rasterization of labels</a> into three distinct classes, non-field(class_0), field(class_1), and field boundary(class_2). In addition, an <a href="https://colab.research.google.com/drive/1ZZg_OdoOSVGRepmwEL4Tgs0ixQXpefiv"> imagery downloader </a> and <a href="https://colab.research.google.com/drive/1f4h51ebbrwd7mlIJSK2_LFI6H8LHtzRA"> resampler </a>were also created using the same API. Also created <a href=" https://colab.research.google.com/drive/1Z89SPz1c1rSoJXakkCDfH2p2b_eEXY8G#scrollTo=wh1KRswT5dNk "> check tool </a>to check if files are missing in the folder and needed to be reloaded.</p>
 									<span class="image main"><img src="images/gee_api.png" alt="" /></span>
 
 
