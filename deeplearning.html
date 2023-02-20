@@ -66,30 +66,26 @@ growth.</p>
 										<ul>
                      <li>Train batch size : 32</li>
                      <li>Validation batch size : 2</li>
-                     <li>Epochs : 300,</li>
+                     <li>Epochs : 300</li>
 										 <li>Dropout rate: 0.15 (model fitting); 0.1 (prediction)</li>
 										 <li>Learning rate: 0.01 (using polynomial learning rate decay as learning rate policy)</li>
                   </ul>
 
-                  <p>The
-results demonstrate the value of applying neural network-based approaches with new sources
-of high resolution imagery for cropland mapping because of its ability to detect individual fields
-more effectively than approaches previously used to map Zambia (e.g. Random Forests). Future
-opportunities exist to improve the model by collecting labels that better balancing the number
-of labels among different classes, which includes improving the number of non-field labels on
-landscapes that lead to false positives (e.g., wetland areas). In addition to improving the overall
-accuracy, the maps provide additional valuable information on field size, which can be used to
-understand the characteristics of the agricultural system. </p>
-                  <span class="image main"><img src="images/model.png" alt="" /></span>
-									<div id="banner">
-									    <div class="inline-block">
-									        <img src ="images/prediction3.png" width="350" height="350">
-									    </div>
+									<hr class="major" />
+									<h2 style="color:#e48bae;">Prediction: using hyper-parameters to smooth edge effect</h2>
+									<p>The prediction hyper-parameters are as follows:</p>
+									<ul>
+									 <li>Prediction patch size: 250</li>
+									 <li>Prediction buffer: 179</li>
+									 <li>Composite buffer: 179</li>
+									 <li>Prediction batch: 2</li>
+									 <li>Shrink pixels: 54</li>
+									 <li>Number of MC trials: 10</li>
+									</ul>
+									<p>The input image is 2358 by 2358 pixels. The <b>patch size</b> of 250 pixels means that the input image is divided into smaller patches of this size. Setting up buffer helps us to work with <b>edge effects</b>. The <b>prediction buffer</b> of 179 pixels is used to ensure that the output image has smooth transitions between neighboring patches. This means that when a patch is processed, the model will also predict an additional buffer of 179 pixels around the edges of the patch. This buffer ensures that the model can capture the context around the edges of the patch and avoids any sharp edges in the output image where the patches are stitched together. </p>
+                  <p>The <b>composite buffer</b> of 179 pixels is used to ensure that the final output image has smooth transitions between all the patches. This means that when the patches are stitched together, an additional buffer of 179 pixels is added around the edges of each patch to ensure that there are no sharp edges or artifacts in the final output image. After ,shrink pixels. As a result, the final prediction dimension is 2000 by 2000.</p>
+                  <p>In the prediction processes, we use model <b>drop out </b>and <b>Monte Carlo dropout (MC)</b> to improve the robustness of the model's predictions. During prediction, dropout is usually turned off. However, according to Sam Khallaghi and Lyndon Estes‘s research, when setting up dropout rate in 0.1, the prediction has better result. The number of MC trials specifies how many times the model should be run with dropout enabled and averaged.  </p>
 
-									    <div class="inline-block">
-									        <img src ="images/prediction4.png" width="350" height="350">
-									    </div>
-									</div>
 
 								</section>
 								<!-- Footer -->
