@@ -5,7 +5,22 @@
 		<title>Yao-Ting Yao | Spatial Data Analyst/Engineer</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<script src="http://survey123.arcgis.com/api/jsapi"></script>
 		<link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+		.embed-container {
+			position: relative;
+			height: 0;
+			padding-bottom:80%; max-width: 100%;}
+		.embed-container iframe, .embed-container object, .embed-container iframe{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;}
+		 .small{position: absolute; z-index: 40; bottom: 0; margin-bottom: -15px;
+		}
+		</style>
 		<style>
      body {
       background-image: url('images/night.jpg');
@@ -14,6 +29,8 @@
       background-size: cover;
       }
     </style>
+
+
 	</head>
 	<body class="is-preload">
 
@@ -108,9 +125,8 @@
 												<li><a href="imageclassification.html" class="button">More</a></li>
 											</ul>
 										</article>
+										</div>
 
-
-									</div>
 								</section>
 <!-- Section -->
 								<section>
@@ -264,19 +280,21 @@ Science</div>
 
 									</section>
 
-
-
-									<!-- Footer -->
-										<div id="footer">
-											Background image by <a href="https://earthobservatory.nasa.gov/features/NightLights">NASA Earth Observatory</a><br>
-											<script>
-										var today = new Date();
-										var year = today.getFullYear();
-										document.writeln("Copyright &copy; " + year+" - Yao-Ting Yao");
-											 </script>
-										</div>
+              <div class="embed-container">
+									<div id='formDiv' width="600" height="600">
+										<script>
+									webform = new Survey123WebForm({
+											clientId: "BhBii5jhCZn4bqQA",
+											container: "formDiv",
+											itemId: "789829a0ec934e419f243cbf354b7326",
+											autoRefresh:3,
+									});
+										</script>
+									</div>
+               </div>
 
 						</div>
+
 					</div>
 
 
@@ -322,14 +340,22 @@ Science</div>
 								</ul>
 
 
-								<footer id="footer">
-									<p class="copyright">&copy; 2022 - Yao-Ting Yao</p>
-								</footer>
 
 						</div>
 					</div> -->
 
 			</div>
+
+			<!-- Footer -->
+		    </br>
+				<div id="footer">
+					Background image by <a href="https://earthobservatory.nasa.gov/features/NightLights">NASA Earth Observatory</a><br>
+					<script>
+				var today = new Date();
+				var year = today.getFullYear();
+				document.writeln("Copyright &copy; " + year+" - Yao-Ting Yao");
+					 </script>
+				</div>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
