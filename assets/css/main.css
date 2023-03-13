@@ -23,6 +23,14 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block; }
 
+  #formDiv {
+    text-align: center;
+    padding: 100;
+    margin: 100;
+    height: 600;
+    width: 600;
+  }
+
 body {
   line-height: 1; }
 
@@ -1481,6 +1489,14 @@ table {
       border-top: 0; }
 
 /* Button */
+.button1 {
+    position: absolute;
+    top:50%;
+    background-color:#FFCCCB;
+    color: #FFCCCB;
+    border:none;
+    border-radius:10px;
+  }
 input[type="submit"],
 input[type="reset"],
 input[type="button"],
