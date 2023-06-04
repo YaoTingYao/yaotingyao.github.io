@@ -1,0 +1,311 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>
+     States Education Smart Mapping
+    </title>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.25/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.25/"></script>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      #infoDiv {
+        padding: 8px;
+      }
+    </style>
+
+    <script>
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/FeatureLayer",
+        "esri/smartMapping/renderers/color",
+        "esri/smartMapping/statistics/histogram",
+        "esri/widgets/smartMapping/ClassedColorSlider",
+        "esri/widgets/Legend",
+        "esri/widgets/BasemapToggle",
+        "esri/core/reactiveUtils",
+          "esri/layers/TileLayer",
+      ], (
+        Map,
+        MapView,
+        FeatureLayer,
+        colorRendererCreator,
+        histogram,
+        ClassedColorSlider,
+        Legend,
+        BasemapToggle,
+        reactiveUtils,
+        TileLayer
+      ) => {
+        let fieldSelect, classSelect, numClassesInput, slider;
+
+        //Add tile layer
+        let tilelayer = new TileLayer({
+    // URL points to a cached tiled map service hosted on ArcGIS Server
+          url: "https://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer"
+        });
+
+        //Add feature layer and popup
+        const layer = new FeatureLayer({
+          title: "2017 Education",
+          url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/States_education_smart_mapping/FeatureServer",
+          popupTemplate: {
+            // autocast as esri/PopupTemplate
+            title: "{NAME}",
+            content: [
+              {
+                type: "fields",
+                fieldInfos: [
+                  {
+                    fieldName: "Population25up",
+                    label: "Adults 25+",
+                    format: {
+                      digitSeparator: true,
+                      places: 0
+                    }
+                  },
+                  {
+                    fieldName: "HSGRAD_CY",
+                    label: "High school diploma",
+                    format: {
+                      digitSeparator: true,
+                      places: 0
+                    }
+                  },
+                  {
+                    fieldName: "GRADDEG_CY",
+                    label: "Graduate/Professional Degree",
+                    format: {
+                      digitSeparator: true,
+                      places: 0
+                    }
+                  },
+                  {
+                    fieldName: "SMCOLL_CY",
+                    label: "No college degree",
+                    format: {
+                      digitSeparator: true,
+                      places: 0
+                    }
+                  },
+                  {
+                    fieldName: "BACHDEG_CY",
+                    label: "College degree",
+                    format: {
+                      digitSeparator: true,
+                      places: 0
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          definitionExpression: "Population25up > 0"
+        });
+
+       //Creates a new Map with a "gray-vector" basemap
+        const map = new Map({
+          basemap: "gray-vector",
+          layers: [tilelayer]
+        });
+
+       //Create map view
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 4,
+          center: [-101.088, 40.969]
+        });
+
+        // Set up UI elements
+
+        view.ui.add(
+          new Legend({
+            view: view
+          }),
+          "bottom-left"
+        );
+        view.ui.add("infoDiv", "top-right");
+
+        // Generate a new renderer each time the user changes an input parameter
+        view.when().then(() => {
+          fieldSelect = document.getElementById("field-select");
+          fieldSelect.addEventListener("change", generateRenderer);
+
+          classSelect = document.getElementById("class-select");
+          classSelect.addEventListener("change", generateRenderer);
+
+          numClassesInput = document.getElementById("num-classes");
+          numClassesInput.addEventListener("change", generateRenderer);
+
+          reactiveUtils
+            .whenOnce(() => !view.updating)
+            .then(() => {
+              generateRenderer();
+            });
+        });
+
+        // Generate rounded arcade expression when user
+        // selects a field name
+        function getValueExpression(field) {
+          return (
+            "Round( ( $feature." + field + " / $feature.Population25up ) * 100, 1)"
+          );
+        }
+
+        function generateRenderer() {
+          const fieldLabel =
+            fieldSelect.options[fieldSelect.selectedIndex].text;
+          // default to natural-breaks when manual is selected for classification method
+          const classificationMethod =
+            classSelect.value === "manual"
+              ? "natural-breaks"
+              : classSelect.value;
+
+          const params = {
+            layer: layer,
+            valueExpression: getValueExpression(fieldSelect.value),
+            view: view,
+            classificationMethod: classificationMethod,
+            numClasses: parseInt(numClassesInput.value),
+            legendOptions: {
+              title: "% population with " + fieldLabel
+            }
+          };
+
+          // generate the renderer and set it on the layer
+          colorRendererCreator
+            .createClassBreaksRenderer(params)
+            .then((rendererResponse) => {
+              layer.renderer = rendererResponse.renderer;
+
+              if (!map.layers.includes(layer)) {
+                map.add(layer);
+              }
+
+              if (classSelect.value === "manual") {
+                // if manual is selected, then add or update
+                // a classed color slider to allow the user to
+                // construct manual class breaks
+                updateColorSlider(rendererResponse);
+              } else {
+                destroySlider();
+              }
+            });
+        }
+
+        // If manual classification method is selected, then create
+        // a classed color slider to allow user to manually modify
+        // the class breaks starting with the generated renderer
+
+        function updateColorSlider(rendererResult) {
+          histogram({
+            layer: layer,
+            valueExpression: getValueExpression(fieldSelect.value),
+            view: view,
+            numBins: 100
+          }).then((histogramResult) => {
+            if (!slider) {
+              const sliderContainer = document.createElement("div");
+              const container = document.createElement("div");
+              container.id = "containerDiv";
+              container.appendChild(sliderContainer);
+              view.ui.add(container, "top-right");
+
+              slider = ClassedColorSlider.fromRendererResult(
+                rendererResult,
+                histogramResult
+              );
+              slider.container = container;
+              slider.viewModel.precision = 1;
+
+              function changeEventHandler() {
+                const renderer = layer.renderer.clone();
+                renderer.classBreakInfos = slider.updateClassBreakInfos(
+                  renderer.classBreakInfos
+                );
+                layer.renderer = renderer;
+              }
+
+              slider.on(
+                ["thumb-change", "thumb-drag", "min-change", "max-change"],
+                changeEventHandler
+              );
+            } else {
+              slider.updateFromRendererResult(rendererResult, histogramResult);
+            }
+          });
+        }
+
+        function destroySlider() {
+          if (slider) {
+            let container = document.getElementById("containerDiv");
+            view.ui.remove(container);
+            slider.container = null;
+            slider = null;
+            container = null;
+          }
+        }
+      });
+
+
+
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+    <div id="infoDiv" class="esri-widget">
+      Select Field:
+      <select id="field-select" class="esri-widget">
+        <option value="GRADDEG_CY">Graduate/Professional Degree</option>
+        <option value="SMCOLL_CY" selected>no college degree</option>
+        <option value="HSGRAD_CY">high school diploma</option>
+        <option value="BACHDEG_CY">college degree</option>
+      </select>
+      Classification:
+      <select id="class-select" class="esri-widget">
+        <option value="equal-interval" selected>Equal interval</option>
+        <option value="quantile">Quantile</option>
+        <option value="natural-breaks">Natual Breaks</option>
+        <option value="manual">Manual</option>
+      </select>
+      Breaks:
+      <input
+        type="number"
+        id="num-classes"
+        class="esri-widget"
+        value="5"
+        min="2"
+        max="10"
+      />
+    </div>
+    <div id="copyright">
+      <script>
+    // Use new Date() to create a new date object with the current date and time. Assign to variable today.
+    var today = new Date();
+    // Use .getFullYear() method to return the full year (4 digits) of today. Assign to variable year.
+    var year = today.getFullYear();
+    // Use document.writeln() method to show on the screen.
+    document.writeln("Copyright &copy; " + year);
+       </script>
+     </div>
+  </body>
+</html>
