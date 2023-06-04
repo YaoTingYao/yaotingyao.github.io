@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Rotterdam City 3D</title>
+
+    <style>
+  html,
+  body,
+  #viewDiv {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
+<link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
+<script src="https://js.arcgis.com/4.26/"></script>
+
+<script>
+
+  require(["esri/views/SceneView","esri/widgets/Bookmarks", "esri/widgets/Expand", "esri/WebScene"]
+  , (SceneView, Bookmarks, Expand, WebScene) => {
+            const titleDiv = document.getElementById("titleDiv");
+
+
+            const scene = new WebScene({
+          portalItem: {
+            // autocasts as new PortalItem()
+            id: "4b5de2ab01f543c9a92226a06b167080"
+          }
+        });
+
+            const view = new SceneView({
+              map: scene,
+               container: "viewDiv",
+              padding: {
+                top: 40
+              }
+         });
+
+         const bookmarks = new Bookmarks({
+   view: view,
+   // allows bookmarks to be added, edited, or deleted
+   editingEnabled: true,
+   visibleElements: {
+     time: false // don't show the time (h:m:s) next to the date
+        }
+     });
+
+     const bkExpand = new Expand({
+   view: view,
+   content: bookmarks,
+   expanded: true
+ })
+
+ // Add the widget to the top-right corner of the view
+ view.ui.add(bkExpand, "top-right");
+
+ view.when(function() {
+   const layer = webmap.layers.getItemAt(0);
+   bookmarks.on("bookmark-select", (event) => {
+     let bookmarksName = event.bookmark.name.toUpperCase()
+     layer.featureEffect = {
+       filter: {
+         where: "Name = '" + bookmarksName + "'"
+       },
+       excludedEffect: "grayscale(100%) opacity(30%)"
+     }
+   });
+   clearBtn.addEventListener("click", () => {
+     layer.featureEffect = null;
+   });
+ });
+
+
+
+
+});
+
+  </script>
+
+    </head>
+
+    <body>
+    <div id="viewDiv"></div>
+    </body>
+  </body>
