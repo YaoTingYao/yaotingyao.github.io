@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Segementation classification</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main0.css" />
+	</head>
+	<body class="is-preload">
+		<div id="body-container">
+
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<!-- Content -->
+								<section>
+									<header>
+										<a href="index.html" class="button">Back</a>
+
+										</br>
+										</br>
+										<h1 style="color: black font-weight: 400; " align="left">Pioneer Study of Mapping Greenhouses in Westport, Massachusetts</h1>
+									</header>
+									<p style= "font-size: 0.8em; text-align:left;">Yao-Ting Yao, Ashna Siddhi, Brenner Burkholder <br>Advanced Remote Sensing Project</p>
+
+									<p>Massachusetts has a thriving greenhouse and nursery industry, ranking in the top 10 states for greenhouse and nursery sales value per square mile. According to the 2017 Census of Agriculture report, the total area of greenhouse vegetables and fresh-cut herbs is 1,755,716 square feet. </p>
+									<p>As part of the efforts to enhance food sustainability, this project aimed to assist the Boston Consulting Group's initiative by developing a methodology for mapping greenhouses. To customize object detection models, Mahalanobis Distance soft classifier and Segmentation Classification (Support Vector Machine and Segmentation Anything Model) were employed. In order to assess accuracy, map assessments were conducted, comparing the performance of different methods. This article will emphasize the Segmentation Classification method.</p>
+
+
+									<hr class="major" />
+									<h2 style="color:#e48bae;">Segmentation Anything Model (SAM)</h2>
+									<p>The greenhouse in Massachusetts is widely separated. The area of the greenhouse is small compared to the large commercial greenhouse. The greenhouse is all reflected by the background, e.g. soil and grass. As a result, using a keen classification method can segment objects from background is vital important.</p>
+									<p>This research used the Segmentation Anything Model(SAM) as one of our segmentation methods. It was released by Meta’s FAIR lab. This foundation model for image segmentation was trained over 11 million images with 1 billion masks. I used to cv2 package to read the NAIP file and used AutomaticMaskGenerator to generate the segmentation result.</p>
+
+									<span class="image main"><img src="images/SAM_script.png" alt="" /></span>
+                  <!-- <p>The Google Earth Engine (GEE) API was utilized to develop a set of automation tools that involved <a href="https://colab.research.google.com/drive/1ZZg_OdoOSVGRepmwEL4Tgs0ixQXpefiv">rasterization of labels</a> into three distinct classes, non-field(class_0), field(class_1), and field boundary(class_2). In addition, an <a href="https://colab.research.google.com/drive/1ZZg_OdoOSVGRepmwEL4Tgs0ixQXpefiv"> imagery downloader </a> and <a href="https://colab.research.google.com/drive/1f4h51ebbrwd7mlIJSK2_LFI6H8LHtzRA"> resampler </a>were also created using the same API. Also created <a href=" https://colab.research.google.com/drive/1Z89SPz1c1rSoJXakkCDfH2p2b_eEXY8G#scrollTo=wh1KRswT5dNk "> check tool </a>to check if files are missing in the folder and needed to be reloaded.</p> -->
+									<span class="image main"><img src="images/SAM_result.png" alt="" /></span>
+
+
+
+
+								</section>
+								<!-- Footer -->
+									<div id="footer">
+										<script>
+									var today = new Date();
+									var year = today.getFullYear();
+									document.writeln("Copyright &copy; " + year+" - Yao-Ting Yao");
+										 </script>
+									</div>
+						</div>
+					</div>
+      </div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
